@@ -189,12 +189,14 @@ while running:
 
         #Click Select
         if event.type == pygame.MOUSEBUTTONDOWN:
-            print("clicked at", mouse_pos)
-            #if board.click(mouse_pos[0], mouse_pos[1]) != None:
-            #    select[0] = board.click(mouse_pos[0], mouse_pos[1])[0]
-            #    select[1] = board.click(mouse_pos[0], mouse_pos[1])[1]
-            #    select[2] = None
-            pass
+            if (mouse_pos[0] > 0 and mouse_pos[1] > 0
+                and mouse_pos[0] < 540 and mouse_pos[1] < 540):
+                print("clicked at", mouse_pos)
+                #if board.click(mouse_pos[0], mouse_pos[1]) != None:
+                #    select[0] = board.click(mouse_pos[0], mouse_pos[1])[0]
+                #    select[1] = board.click(mouse_pos[0], mouse_pos[1])[1]
+                #    select[2] = None
+                pass
 
 
     #Game Over
