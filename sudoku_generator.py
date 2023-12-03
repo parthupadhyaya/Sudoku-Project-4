@@ -22,9 +22,97 @@ class SudokuGenerator:
 	Return:
 	None
     '''
-    def __init__(self, row_length, removed_cells):
-        pass
-
+    def __init__(self,row_length,removed_cells):
+        
+        #initialize variables
+        self.row_length = row_length
+        self.removed_cells = removed_cells
+        self.box_length = math.sqrt(row_length)
+        no_dup_col_count = 0
+        rand_num_row = []
+        rand_num_col = []
+        
+        #create sudoku number list
+        while no_dup_col_count != row_length:
+            rand_num_2D_grid = []
+            no_dup_col_count = 0
+            removal_comp = 0
+            
+            #create a random number grid without the rows having duplicate numbers
+            for i in range(row_length):
+                random.seed()
+                rand_num_row = random.sample(range(1,row_length+1), k=row_length)
+                rand_num_2D_grid.append(rand_num_row)
+                rand_num_row = []  
+                
+            #obtain the grid columns to check and remove duplicates in all columns
+            for j in range(row_length):
+                for k in range(row_length):
+                    rand_num_col.append(rand_num_2D_grid[k][j])
+                    #print(rand_num_2D_grid[k][j])
+                #print(set(rand_num_col))
+                
+                #if a sudoku column has duplicate numbers besides zero, remove them
+                rand_num_col_copy = rand_num_col.copy()    
+                for x in rand_num_col_copy[:]:
+                    if x > 0 and rand_num_col_copy.count(x) > 1:
+                        rand_num_col_copy.remove(x)
+                        
+                if len(rand_num_col_copy) != row_length:
+                    #print("hey")
+                    if removed_cells != 0:
+                        
+                        #replace duplicate numbers in columns with zeros
+                        seen = set()
+                        for l, e in enumerate(rand_num_col):
+                            if e in seen:
+                                #print("seen")
+                                if removed_cells != 0:
+                                    rand_num_col[l] = 0
+                                    removed_cells -= 1
+                                    removal_comp += 1
+                                    print("removed a cell", removed_cells, "left")
+                                else:
+                                    rand_num_col = []
+                                    removed_cells += removal_comp
+                                    break
+                            else:
+                                seen.add(e)
+                        print(rand_num_col)
+                        rand_num_2D_grid[:][j] = rand_num_col
+                        print(rand_num_2D_grid)
+                        #print('changed')
+                        no_dup_col_count += 1
+                        rand_num_col = []
+                else:
+                    no_dup_col_count += 1
+                    rand_num_col = []
+                    
+            print(no_dup_col_count)
+        
+        print(rand_num_2D_grid)
+        #remove cells
+        print(removed_cells)
+        for i in range(removed_cells):
+            rand_num1 = random.randrange(0,row_length)
+            rand_num2 = random.randrange(0,row_length)
+            
+            #only remove cell if it has not already been removed
+            while rand_num_2D_grid[rand_num1][rand_num2] == 0:
+                rand_num1 = random.randrange(0,row_length)
+                rand_num2 = random.randrange(0,row_length)
+                if rand_num_2D_grid[rand_num1][rand_num2] != 0:
+                    rand_num_2D_grid[rand_num1][rand_num2] = 0
+                    break
+            else:
+                rand_num_2D_grid[rand_num1][rand_num2] = 0
+                #print("Popped location:", rand_num1, rand_num2)
+            
+            
+            
+        self.board = rand_num_2D_grid
+        print(rand_num_2D_grid)
+    """
     '''
 	Returns a 2D python list of numbers which represents the board
 
@@ -209,3 +297,7 @@ def generate_sudoku(size, removed):
     sudoku.remove_cells()
     board = sudoku.get_board()
     return board
+"""
+"test functions"
+SG = SudokuGenerator(9,16)
+#SG.__init__(3,4)
