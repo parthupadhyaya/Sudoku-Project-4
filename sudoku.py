@@ -83,7 +83,6 @@ def mouse_in_button(mouse_pos, positions, position):
 while running:
     keys = pygame.key.get_pressed()
     mouse_pos = pygame.mouse.get_pos()
-    mouse_click = pygame.mouse.get_pressed()
 
     screen.fill("white")
 
@@ -92,6 +91,7 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if game_state == 1:
+                select01_temp = select[0:2]
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     if select[0] > 0:
                         select[0] -= 1
@@ -108,16 +108,19 @@ while running:
                     if select[1] < 8:
                         select[1] += 1
                         select[2] = None
+                if select01_temp != select[0:2]:
+                    print("selected", select[0:2])
                 if event.key == pygame.K_RETURN:
                     if select[2] != None:
                         #board.place_number(select[2])
-                        print("confirm", select)
+                        print("confirmed", select[2], "at", select[0:2])
                         #if board.is_full():
                         #    if board.check_board():
                         #        game_state = 3
                         #    else:
                         #        game_state = 2
                     continue
+                select2_temp = select[2]
                 if event.key == pygame.K_1 or event.key == pygame.K_KP_1:
                     select[2] = 1
                 if event.key == pygame.K_2 or event.key == pygame.K_KP_2:
@@ -136,7 +139,10 @@ while running:
                     select[2] = 8
                 if event.key == pygame.K_9 or event.key == pygame.K_KP_9:
                     select[2] = 9
-                print(select)
+                if select2_temp != select[2] and select[2] != None:
+                    #board.sketch(select[2])
+                    print("sketched", select[2],"at",select[0:2])
+                    pass
             
     #Main Menu
     if game_state == 0:
@@ -145,10 +151,11 @@ while running:
         for position in difficulty_positions:
             if mouse_in_button(mouse_pos, difficulty_positions, position):
                 screen.blit(difficulty_positions[position][1], difficulty_positions[position][0])
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONUP:
                     difficulty = 0 if position == easy else 1 if position == medium else 2
                     #board = Board(screen.get_width(), screen.get_height()-60, screen, difficulty)
                     select = [4,4,None]
+                    print("selected", select[0:2])
                     #board.select(4,4)
                     game_state = 1
             else:
@@ -163,7 +170,7 @@ while running:
         for position in game_button_positions:
             if mouse_in_button(mouse_pos, game_button_positions, position):
                 screen.blit(game_button_positions[position][1], game_button_positions[position][0])
-                if event.type == pygame.MOUSEBUTTONUP:
+                if event.type == pygame.MOUSEBUTTONDOWN:
 
                     #Press Reset
                     if position == reset:
@@ -182,16 +189,11 @@ while running:
 
         #Click Select
         if event.type == pygame.MOUSEBUTTONDOWN:
+            print("clicked at", mouse_pos)
             #if board.click(mouse_pos[0], mouse_pos[1]) != None:
             #    select[0] = board.click(mouse_pos[0], mouse_pos[1])[0]
             #    select[1] = board.click(mouse_pos[0], mouse_pos[1])[1]
             #    select[2] = None
-            pass
-
-        #Update Board
-        #board.select(select[0], select[1])
-        if select[2] != None:
-            #board.sketch(select[2])
             pass
 
 
