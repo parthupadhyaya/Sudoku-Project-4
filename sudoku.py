@@ -1,5 +1,5 @@
 import pygame
-
+freedom = " 1"
 #Initialize Pygame
 pygame.init()
 pygame.font.init()
